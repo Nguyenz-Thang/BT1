@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Counter App</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      #root {
+        width: 290px;
+        height: 200px;
+        background-color: rgb(187, 204, 218);
+        margin: 0 auto;
+        border-radius: 10px;
+        border: 1px solid rgb(179, 194, 206);
+        margin-top: 50px;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 10px;
+      }
+      h2 {
+        text-align: center;
+        margin-top: 20px;
+      }
+      button {
+        margin: 20px;
+      }
+      #reset {
+        background-color: rgb(219, 199, 199);
+        border: 1px solid black;
+        color: white;
+        border-radius: 10px;
+        padding: 5px;
+        font-weight: bold;
+        opacity: 0.5;
+      }
+      #reset:hover {
+        opacity: 1;
+      }
+      #reduce {
+        background-color: rgb(193, 231, 181);
+        border: 1px solid black;
+        color: white;
+        border-radius: 10px;
+        padding: 5px;
+        opacity: 0.5;
+      }
+      #reduce:hover {
+        opacity: 1;
+      }
+      #increase {
+        background-color: rgb(130, 199, 226);
+        border: 1px solid black;
+        color: white;
+        border-radius: 10px;
+        padding: 5px;
+        opacity: 0.5;
+      }
+      #increase:hover {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      function Counter() {
+        const [value, setValue] = React.useState(0);
+        return (
+          <>
+            <h2
+              style={{
+                color: value > 0 ? "green" : value < 0 ? "red" : "gray",
+              }}
+            >
+              {value}
+            </h2>
+
+            <button
+              id="reduce"
+              onClick={() => {
+                setValue(value - 1);
+              }}
+            >
+              Reduce
+            </button>
+            <button
+              id="reset"
+              onClick={() => {
+                setValue(0);
+              }}
+            >
+              Reset
+            </button>
+            <button
+              id="increase"
+              onClick={() => {
+                setValue(value + 1);
+              }}
+            >
+              Inrease
+            </button>
+          </>
+        );
+      }
+      const app = (
+        <>
+          <h1>Counter App</h1>
+          <Counter />
+        </>
+      );
+      const root = ReactDOM.createRoot(document.querySelector("#root"));
+      root.render(app);
+    </script>
+  </body>
+</html>

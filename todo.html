@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Courier New", Courier, monospace;
+      }
+      #root {
+        width: 400px;
+        height: auto;
+        background-color: rgb(70, 70, 70);
+        color: white;
+        border-radius: 10px;
+        margin: 0 auto;
+        margin-top: 30px;
+      }
+      h1 {
+        text-align: center;
+      }
+      form {
+        margin: 10px;
+        position: relative;
+        display: inline-block;
+        justify-content: center;
+      }
+      form input {
+        padding: 5px;
+        width: 380px;
+        border-radius: 20px;
+        border: 1px solid rgb(161, 161, 161);
+        position: relative;
+        padding-right: 50px;
+      }
+      form input:focus {
+        border: 1px solid rgb(182, 109, 15);
+        outline: none;
+      }
+
+      form button {
+        position: absolute;
+        right: 0px;
+        background-color: rgb(69, 197, 155);
+        color: white;
+        padding: 5px;
+        border: 1px solid rgb(161, 161, 161);
+        border-radius: 0 10px 10px 0;
+      }
+      form button:hover {
+        border: 1px solid rgb(182, 109, 15);
+        outline: none;
+      }
+      #task-list {
+        margin: 15px;
+        padding: 5px;
+        margin-top: 2px;
+      }
+      li {
+        list-style: none;
+        background-color: rgb(136, 136, 136);
+        margin: 5px;
+        padding: 5px;
+        border-radius: 5px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+      /* li:hover {
+        opacity: 0.8;
+      } */
+      #task-list button {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        border: none;
+        border-top-left-radius: 5px;
+        padding: 2px;
+        background-color: brown;
+        color: white;
+      }
+      #task-list button:hover {
+        background-color: rgb(190, 1, 1);
+      }
+      #task-list input {
+        margin-right: 5px;
+      }
+      p {
+        background-color: rgb(37, 39, 39);
+        padding: 5px;
+        font-size: 13px;
+      }
+      #report {
+        display: flex;
+      }
+      #total {
+        background-color: rgb(8, 103, 211);
+      }
+      #remaining {
+        background-color: rgb(224, 80, 80);
+      }
+      #completed {
+        background-color: rgb(13, 141, 98);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      let uniqId = 0;
+      function TodoApp() {
+        const [inputValue, setInputValue] = React.useState("");
+        const [todos, setTodos] = React.useState([
+          {
+            id: 1,
+            text: "con gi dau nhung loi nho nhung truoc day khi do chinh la nhung gi minh gay ra",
+            completed: false,
+          },
+          {
+            id: 2,
+            text: "ok",
+            completed: true,
+          },
+          {
+            id: 3,
+            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod laboriosam dolor laborum accusamus possimus illum itaque dolorem saepe nemo expedita, incidunt architecto dignissimos quisquam temporibus reiciendis assumenda laudantium a porro!",
+            completed: false,
+          },
+        ]);
+
+        const handleInputChange = (e) => {
+          setInputValue(e.target.value); // Lấy giá trị từ input
+        };
+        const handleSubmit = (e) => {
+          e.preventDefault(); // Ngăn trang reload khi submit form
+          if (inputValue.trim()) {
+            setTodos([
+              { id: ++uniqId, text: inputValue, completed: false },
+              ...todos,
+            ]);
+            setInputValue(""); // Reset input sau khi thêm
+          }
+        };
+        const toggleTask = (id) => {
+          const newTodos = todos.map((todo) => {
+            if (todo.id === id) {
+              return { ...todo, completed: !todo.completed };
+            }
+            return todo;
+          });
+          setTodos(newTodos);
+        };
+
+        const deleteTask = (id) => {
+          if (window.confirm(`Bạn có chắc muốn xóa task không?`)) {
+            const newTodos = todos.filter((t) => t.id !== id);
+            setTodos(newTodos);
+          }
+        };
+        const total = todos.length;
+        const completed = todos.filter((todo) => todo.completed).length;
+        const remaining = total - completed;
+
+        return (
+          <>
+            <form onSubmit={handleSubmit}>
+              <input
+                value={inputValue}
+                onChange={handleInputChange}
+                placeholder="Nhập task mới..."
+              />
+              <button type="submit">Thêm</button>
+            </form>
+            <div id="report">
+              <p id="total">Tổng: {total} task(s)</p>
+              <p id="completed">Hoàn thành: {completed} task(s)</p>
+              <p id="remaining">Còn lại: {remaining} task(s)</p>
+            </div>
+
+            <ul id="task-list">
+              {todos.map((todo) => (
+                <li key={todo.id}>
+                  <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={() => toggleTask(todo.id)}
+                  />
+                  <span className={todo.completed ? "completed" : ""}>
+                    {todo.text}
+                  </span>
+                  <button onClick={() => deleteTask(todo.id)}>Xóa</button>
+                </li>
+              ))}
+            </ul>
+          </>
+        );
+      }
+      const app = (
+        <>
+          <h1>Todo list</h1>
+          <TodoApp />
+        </>
+      );
+      const root = ReactDOM.createRoot(document.querySelector("#root"));
+      root.render(app);
+    </script>
+  </body>
+</html>
