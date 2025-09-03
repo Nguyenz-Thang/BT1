@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
     <style>
       * {
         margin: 0;
@@ -105,6 +109,36 @@
       #completed {
         background-color: rgb(13, 141, 98);
       }
+      #back {
+        position: fixed;
+        top: 30px;
+        left: 15px;
+        padding: 10px;
+        border-radius: 20px;
+        border-radius: 1px solid black;
+        vertical-align: middle;
+        display: inline-flex;
+        align-items: center;
+      }
+      img {
+        width: 20px;
+        margin-right: 10px;
+      }
+      #back {
+        position: fixed;
+        top: 30px;
+        left: 15px;
+        padding: 10px;
+        border-radius: 20px;
+        border-radius: 1px solid black;
+        vertical-align: middle;
+        display: inline-flex;
+        align-items: center;
+      }
+      img {
+        width: 20px;
+        margin-right: 10px;
+      }
     </style>
   </head>
   <body>
@@ -122,23 +156,7 @@
       let uniqId = 0;
       function TodoApp() {
         const [inputValue, setInputValue] = React.useState("");
-        const [todos, setTodos] = React.useState([
-          {
-            id: 1,
-            text: "con gi dau nhung loi nho nhung truoc day khi do chinh la nhung gi minh gay ra",
-            completed: false,
-          },
-          {
-            id: 2,
-            text: "ok",
-            completed: true,
-          },
-          {
-            id: 3,
-            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod laboriosam dolor laborum accusamus possimus illum itaque dolorem saepe nemo expedita, incidunt architecto dignissimos quisquam temporibus reiciendis assumenda laudantium a porro!",
-            completed: false,
-          },
-        ]);
+        const [todos, setTodos] = React.useState([]);
 
         const handleInputChange = (e) => {
           setInputValue(e.target.value); // Lấy giá trị từ input
@@ -175,6 +193,12 @@
 
         return (
           <>
+            <a href="index.html">
+              <button id="back">
+                <img src="return.png" alt="" />
+                Quay lại nơi chúng ta gặp nhau
+              </button>
+            </a>
             <form onSubmit={handleSubmit}>
               <input
                 value={inputValue}

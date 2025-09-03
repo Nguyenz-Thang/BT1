@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      #root {
+        width: 1050px;
+        height: auto;
+        background-color: beige;
+        margin: 0 auto;
+        border-radius: 5px;
+      }
+      h1 {
+        text-align: center;
+      }
+      #modal {
+        position: fixed;
+        top: 200px;
+        left: 700px;
+        background-color: azure;
+        margin: 0 auto;
+        width: 500px;
+        text-align: center;
+        justify-content: center;
+        display: block;
+      }
+
+      #title {
+        text-transform: capitalize;
+        text-align: center;
+      }
+      li {
+        list-style: none;
+        background-color: white;
+        border-radius: 10px;
+        border: 1px solid black;
+        width: 330px;
+        display: inline-flex;
+        height: 220px;
+        padding: 10px;
+        margin: 5px;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      ul {
+        margin-left: 15px;
+        margin-top: 20px;
+      }
+      #body {
+        text-align: center;
+      }
+      button {
+        padding: 5px;
+      }
+      #id {
+        border: 1px solid black;
+        padding: 5px;
+        align-self: flex-start;
+        border-bottom-right-radius: 10px;
+        border-top: none;
+        border-left: none;
+      }
+      #id-modal {
+        display: block;
+        margin-top: 50px;
+      }
+      .modal-content div {
+        padding: 0 20px 20px 20px;
+        border: 1px solid black;
+        border-radius: 10px;
+      }
+      #close {
+        cursor: pointer;
+        float: right;
+        font-size: 50px;
+        border-radius: 10px;
+        padding: 0 10px 10px 10px;
+      }
+      #close:hover {
+        color: rgb(47, 87, 87);
+      }
+      #back {
+        position: fixed;
+        top: 30px;
+        left: 15px;
+        padding: 10px;
+        border-radius: 20px;
+        border-radius: 1px solid black;
+        vertical-align: middle;
+        display: inline-flex;
+        align-items: center;
+      }
+      img {
+        width: 20px;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      function ProductsList() {
+        const [products, setProducts] = React.useState([]);
+        const [loading, setLoading] = React.useState(true);
+        const [select, setSelect] = React.useState(null);
+        React.useEffect(() => {
+          fetch("https://jsonplaceholder.typicode.com/posts?_limit=12")
+            .then((res) => res.json())
+            .then((products) => {
+              setProducts(products);
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        }, []);
+        const truncate = (body, kitu = 100) => {
+          return body.length > kitu ? body.slice(0, kitu) + "..." : body;
+        };
+
+        return (
+          <>
+            <a href="index.html">
+              <button id="back">
+                <img src="return.png" alt="" />
+                Quay lại nơi chúng ta gặp nhau
+              </button>
+            </a>
+            <ul>
+              {loading ? <li>Đang tải...</li> : null}
+              {products.map((product) => (
+                <li key={product.id}>
+                  <span id="id">ID: {product.id}</span>
+                  <div id="title">
+                    <h3>{product.title}</h3>
+                  </div>
+                  <div id="body">{truncate(product.body)}</div>
+                  <button
+                    onClick={() => {
+                      setSelect(product);
+                    }}
+                  >
+                    Xem chi tiết
+                  </button>
+                </li>
+              ))}
+            </ul>
+            {select != null && (
+              <div id="modal">
+                <div class="modal-content">
+                  <span
+                    id="close"
+                    onClick={() => {
+                      setSelect(null);
+                    }}
+                  >
+                    &times;
+                  </span>
+                  <div>
+                    <span id="id-modal">ID: {select.id}</span>
+                    <h3 id="title-modal">{select.title}</h3>
+                    <p id="body-modal">{select.body}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        );
+      }
+      const app = (
+        <>
+          <h1>Product List</h1>
+          <ProductsList />
+        </>
+      );
+      const roott = ReactDOM.createRoot(document.querySelector("#root"));
+      roott.render(app);
+    </script>
+  </body>
+</html>

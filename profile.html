@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Courier New", Courier, monospace;
+      }
+      #root {
+        background-color: rgb(154, 154, 160);
+        width: 1000px;
+        height: auto;
+        margin: 0 auto;
+        border-radius: 10px;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 10px;
+        padding-top: 20px;
+        border-bottom: 1px solid black;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+      }
+      li {
+        background-color: rgb(49, 52, 54);
+        padding: 15px;
+        width: 320px;
+        display: inline-block;
+        vertical-align: top;
+        border-radius: 10px;
+        margin: 5px;
+        color: white;
+      }
+      #back {
+        position: fixed;
+        top: 30px;
+        left: 15px;
+        padding: 10px;
+        border-radius: 20px;
+        border-radius: 1px solid black;
+        vertical-align: middle;
+        display: inline-flex;
+        align-items: center;
+      }
+      img {
+        width: 20px;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      function UsersList() {
+        const [users, setUsers] = React.useState([]);
+        const [loading, setLoading] = React.useState(true);
+        React.useEffect(() => {
+          fetch("https://jsonplaceholder.typicode.com/users")
+            .then((res) => res.json())
+            .then((users) => {
+              setUsers(users);
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        }, []);
+        return (
+          <>
+            <a href="index.html">
+              <button id="back">
+                <img src="return.png" alt="" />
+                Quay lại nơi chúng ta gặp nhau
+              </button>
+            </a>
+            <ul>
+              {loading ? <li>Đang tải...</li> : null}
+              {users.map((user) => (
+                <li key={user.id}>
+                  <div id="name">Name: {user.name}</div>
+                  <div id="username">Username: {user.username}</div>
+                  <div id="email">Email: {user.email}</div>
+                  <div id="phone">Phone: {user.phone}</div>
+                  <div id="website">Website: {user.website}</div>
+                  <div id="address">
+                    <strong>Address</strong>
+                    <div id="street">Street: {user.address.street}</div>
+                    <div id="city">City: {user.address.city}</div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </>
+        );
+      }
+      const app = (
+        <>
+          <h1>Users</h1>
+          <UsersList />
+        </>
+      );
+      const roott = ReactDOM.createRoot(document.querySelector("#root"));
+      roott.render(app);
+    </script>
+  </body>
+</html>
